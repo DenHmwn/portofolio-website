@@ -700,12 +700,14 @@
                   melalui form di bawah ini.
                 </p>
 
-                <form action="https://formspree.io/f/mblyqobo" method="POST">
+                <div id="alert" class="alert"></div>
+                <form id="contactForm" method="POST">
                   <div class="row gy-4">
                     <div class="col-md-6">
                       <input
                         type="text"
                         name="name"
+                        id="name"
                         class="form-control"
                         placeholder="Your Name"
                         required
@@ -717,6 +719,7 @@
                         type="email"
                         class="form-control"
                         name="email"
+                        id="email"
                         placeholder="Your Email"
                         required
                       />
@@ -727,6 +730,7 @@
                         type="text"
                         class="form-control"
                         name="subject"
+                        id="subject"
                         placeholder="Subject"
                         required
                       />
@@ -736,6 +740,7 @@
                       <textarea
                         class="form-control"
                         name="message"
+                        id="message"
                         rows="6"
                         placeholder="Message"
                         required
@@ -790,6 +795,66 @@
     <script src="assets/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
     <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
     <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+    <script>
+      document
+        .getElementById("contactForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          console.log("Form submitted!"); //untuk debugging
+
+          // Ambil nilai dari form
+          const name = document.getElementById("name").value;
+          const email = document.getElementById("email").value;
+          const subject = document.getElementById("subject").value;
+          const message = document.getElementById("message").value;
+
+          console.log("Form data:", { name, email, subject, message }); //untuk debugging
+
+          // Ganti dengan email Anda
+          const yourEmail = "denihimawan595@gmail.com"; // <-- GANTI DENGAN EMAIL ANDA
+
+          // Buat mailto URL
+          const mailtoURL = `mailto:${yourEmail}?subject=${encodeURIComponent(
+            subject
+          )}&body=${encodeURIComponent(
+            `Nama: ${name}\n` +
+              `Email: ${email}\n` +
+              `Subject: ${subject}\n\n` +
+              `Pesan:\n${message}`
+          )}`;
+
+          // Buka aplikasi email default
+          window.location.href = mailtoURL;
+
+          // Tampilkan pesan sukses
+          showAlert(
+            "Aplikasi email Anda akan terbuka. Silahkan kirim email dari sana.",
+            "success"
+          );
+
+          // Reset form
+          this.reset();
+        });
+
+      function showAlert(message, type) {
+        const alert = document.getElementById("alert");
+        if (alert) {
+          alert.textContent = message;
+          alert.className = `alert alert-${type}`;
+          alert.style.display = "block";
+
+          // Sembunyikan alert setelah 5 detik
+          setTimeout(() => {
+            alert.style.display = "none";
+          }, 5000);
+        } else {
+          console.error("Alert element not found!");
+          // Fallback: gunakan alert browser
+          window.alert(message);
+        }
+      }
+    </script>
 
     <!-- Main JS File -->
     <script src="assets/js/main.js"></script>
